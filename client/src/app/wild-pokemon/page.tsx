@@ -6,7 +6,9 @@ import {
     setWildPokemon,
     addToParty,
     setSelectedType,
-    addToPCBox,
+    setWildResults,
+    saveWildPokemonState,
+    loadWildPokemonState,
 } from "../../lib/features/pokemonSlice";
 import {
     Box,
@@ -27,10 +29,9 @@ import {
 import axios from "axios";
 import Image from "next/image";
 
-// Componente Wild
 const Wild = () => {
     const dispatch = useAppDispatch();
-    const wildPokemon = useAppSelector((state) => state.pokemon.wild); //Pokémon en Redux
+    const wildPokemon = useAppSelector((state) => state.pokemon.wildResults); // Resultados del tab Wild Pokémon
     const selectedType = useAppSelector((state) => state.pokemon.selectedType);
     const [types, setTypes] = useState<string[]>([]);
     const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | null>(
@@ -38,6 +39,7 @@ const Wild = () => {
     );
     const [dialogOpen, setDialogOpen] = useState(false);
 
+    //Cargar tiposn desde API
     useEffect(() => {
         const fetchTypes = async () => {
             const response = await fetch("https://pokeapi.co/api/v2/type/");
@@ -49,27 +51,46 @@ const Wild = () => {
     }, []);
 
     useEffect(() => {
+        dispatch(loadWildPokemonState())
+            .unwrap()
+            .then((payload) => {
+                dispatch(setSelectedType(payload.selectedType));
+                dispatch(setWildResults(payload.wildResults));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [dispatch]);
+
+    // Fetch Pokémon al cambiar el tipo seleccionado
+    useEffect(() => {
         const fetchWildPokemon = async () => {
             const response = await fetch(
                 `https://pokeapi.co/api/v2/type/${selectedType}`
             );
             const data = await response.json();
-            const pokemon = await Promise.all(
-                data.pokemon.map(
-                    async (p: { pokemon: { url: string; name: string } }) => {
-                        return {
-                            id: p.pokemon.url.split("/").filter(Boolean).pop(),
-                            name: p.pokemon.name,
-                            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.pokemon.url
-                                .split("/")
-                                .filter(Boolean)
-                                .pop()}.png`,
-                            type: selectedType,
-                        };
-                    }
-                )
+
+            const pokemon = data.pokemon.map(
+                (p: { pokemon: { url: string; name: string } }) => ({
+                    id: p.pokemon.url.split("/").filter(Boolean).pop(),
+                    name: p.pokemon.name,
+                    image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.pokemon.url
+                        .split("/")
+                        .filter(Boolean)
+                        .pop()}.png`,
+                    type: selectedType,
+                    description: "A wild Pokémon!",
+                })
             );
-            dispatch(setWildPokemon(pokemon));
+
+            if (pokemon.length > 0) {
+                dispatch(setWildPokemon(pokemon));
+                dispatch(setWildResults(pokemon));
+                dispatch(
+                    saveWildPokemonState({ selectedType, wildResults: pokemon })
+                );
+            } else {
+            }
         };
 
         fetchWildPokemon();
@@ -110,7 +131,7 @@ const Wild = () => {
                 dispatch(addToParty(pokemon));
                 window.db.savePokemon(pokemon);
             } else {
-                //Guardar en MongoDB si se alcanzó el límite...
+                //Guardar en Mongo si se alcanzó el límite
                 await axios.post("http://localhost:4000/api/pc-box", pokemon);
             }
 
@@ -137,20 +158,21 @@ const Wild = () => {
                 displayEmpty
                 sx={{
                     marginBottom: "20px",
-                    width: "200px",
+                    width: "180px",
+                    height: "40px",
                     backgroundColor: "#fff",
                 }}
             >
                 {types.map((type) => (
                     <MenuItem key={type} value={type}>
-                        {type.charAt(0).toUpperCase() + type.slice(1)}{" "}
+                        {type.charAt(0).toUpperCase() + type.slice(1)}
                     </MenuItem>
                 ))}
             </Select>
 
             <Grid container spacing={3}>
                 {wildPokemon.map((pokemon) => (
-                    <Grid item xs={12} sm={6} md={4} key={pokemon.id}>
+                    <Grid item xs={12} sm={6} md={3} key={pokemon.id}>
                         <Card
                             sx={{
                                 maxWidth: 345,

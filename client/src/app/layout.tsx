@@ -11,7 +11,6 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // Cargar Pokémon desde SQLite al iniciar la aplicación
         dispatch(loadPartyFromDB());
     }, [dispatch]);
 

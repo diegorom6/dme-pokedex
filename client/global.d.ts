@@ -3,8 +3,25 @@ export {};
 declare global {
     interface Window {
         db: {
-            savePokemon: (pokemon: Pokemon) => void;
             getPokemon: () => Promise<Pokemon[]>;
+            savePokemon: (pokemon: Pokemon) => void;
+            deletePokemon: (pokemonId: number) => Promise<void>;
+        };
+        electronAPI: {
+            minimizeWindow(): void;
+            maximizeWindow(): void;
+            closeWindow(): void;
+        };
+        wildPokemonAPI: {
+            getWildPokemonState: () => Promise<{
+                results: string;
+                selectedType: string;
+                wildResults: Pokemon[];
+            }>;
+            saveWildPokemonState: (state: {
+                selectedType: string;
+                wildResults: Pokemon[];
+            }) => Promise<void>;
         };
     }
 

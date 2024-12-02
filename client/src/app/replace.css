@@ -1,0 +1,106 @@
+/* Originales de CustomFrame */
+
+* {
+    font-family: 'Roboto, sans-seriff';
+}
+
+.frame {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.topBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1c0723;
+    color: white;
+    padding: 10px 0px 16px;
+    height: 56px;
+}
+
+.controls {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    margin: 0 2px;
+    padding: 5px 15px;
+    background-color: transparent;
+    border: none;
+    color: #a59ca8;
+    cursor: pointer;
+}
+
+main {
+    overflow-y: scroll;
+    height: calc(100vh - 56px);
+    background: rgb(19, 13, 53);
+    background: linear-gradient(168deg, rgba(19, 13, 53, 1) 36%, rgba(16, 9, 22, 1) 68%, rgba(38, 15, 48, 1) 95%);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(179, 48, 255);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #b207a1;
+}
+
+/* Replaces de MUI para estilos más propios 👌 */
+
+.css-1at17m1-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: white !important;
+    background-color: #6f1792;
+}
+
+/* Pestañas */
+.css-1at17m1-MuiButtonBase-root-MuiTab-root {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #40204a;
+    color: white;
+    border-radius: 8px;
+    margin: 4px;
+    width: 240px;
+    font-size: 12px;
+    height: 40px;
+    min-height: 4px;
+    text-transform: capitalize;
+    align-items: self-start;
+    justify-content: flex-start;
+    font-weight: 100;
+}
+
+.css-1qltlow-MuiTabs-indicator {
+    height: 0px;
+}
+
+.css-1at17m1-MuiButtonBase-root-MuiTab-root>.MuiTab-icon {
+    margin-bottom: 0px;
+    margin-right: 4px;
+}
+
+.css-1k7o7i-MuiTabs-root {
+    padding-left: 0px;
+}
+
+/* Botón Catch */
+
+.MuiButton-containedPrimary {
+    background-color: #7e1be7 !important;
+}

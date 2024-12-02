@@ -2,8 +2,19 @@
 
 import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../lib/hooks";
-import { loadPartyFromDB } from "../../lib/features/pokemonSlice";
-import Image from "next/image";
+import {
+    loadPartyFromDB,
+    removeFromParty,
+} from "../../lib/features/pokemonSlice";
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardMedia,
+    Grid,
+    Typography,
+} from "@mui/material";
 
 const Party = () => {
     const dispatch = useAppDispatch();
@@ -13,27 +24,63 @@ const Party = () => {
         dispatch(loadPartyFromDB());
     }, [dispatch]);
 
+    const handleRemoveFromParty = async (pokemonId: number) => {
+        window.db
+            .deletePokemon(pokemonId)
+            .then(() => {
+                dispatch(removeFromParty(pokemonId));
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    if (partyPokemon.length === 0) {
+        return (
+            <Box sx={{ padding: "20px", textAlign: "center" }}>
+                <Typography variant="h6">
+                    Your party is empty. Catch some Pokémon to store them here!
+                </Typography>
+            </Box>
+        );
+    }
+
     return (
-        <div>
-            <h1>Party Pokémon</h1>
-            {partyPokemon.length === 0 ? (
-                <p>No Pokémon in your party.</p>
-            ) : (
-                <ul>
-                    {partyPokemon.map((p) => (
-                        <li key={p.id}>
-                            <Image
-                                src={p.image}
-                                alt={p.name}
-                                width={200}
-                                height={200}
+        <Box sx={{ padding: "20px" }}>
+            <Typography variant="h4" gutterBottom>
+                Pokémon Party
+            </Typography>
+            <Grid container spacing={2} justifyContent="center">
+                {partyPokemon.map((pokemon) => (
+                    <Grid item xs={4} sm={3} md={2} key={pokemon.id}>
+                        <Card sx={{ maxWidth: 200 }}>
+                            <CardMedia
+                                component="img"
+                                alt={pokemon.name}
+                                image={pokemon.image}
+                                title={pokemon.name}
+                                sx={{ height: 140, objectFit: "contain" }}
                             />
-                            <p>{p.name}</p>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+                            <CardContent>
+                                <Typography variant="h6" align="center">
+                                    {pokemon.name}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    fullWidth
+                                    onClick={() =>
+                                        handleRemoveFromParty(pokemon.id)
+                                    }
+                                >
+                                    Delete
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
     );
 };
 

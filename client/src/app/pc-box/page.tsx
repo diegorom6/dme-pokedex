@@ -15,7 +15,6 @@ export default function PcBox() {
     const [pcBoxPokemon, setPcBoxPokemon] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch de Pokémon en la PC Box desde el backend
     useEffect(() => {
         const fetchPcBoxPokemon = async () => {
             try {
@@ -24,7 +23,7 @@ export default function PcBox() {
                 );
                 setPcBoxPokemon(data);
             } catch (error) {
-                console.error("Failed to fetch PC Box Pokemon:", error);
+                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -33,7 +32,6 @@ export default function PcBox() {
         fetchPcBoxPokemon();
     }, []);
 
-    // Mensaje mientras carga
     if (loading) {
         return (
             <Box sx={{ padding: "20px" }}>
@@ -42,12 +40,11 @@ export default function PcBox() {
         );
     }
 
-    // Mensaje si no hay Pokémon en la PC Box
     if (pcBoxPokemon.length === 0) {
         return (
             <Box sx={{ padding: "20px", textAlign: "center" }}>
                 <Typography variant="h6">
-                    Your PC Box is empty. Catch more Pokémon to store them here!
+                    Your PC Box is empty. Catch Pokémons to store them here!
                 </Typography>
             </Box>
         );

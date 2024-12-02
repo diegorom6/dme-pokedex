@@ -23,7 +23,6 @@ app.get("/api/pc-box", async (req: Request, res: Response) => {
         const pcBoxPokemon = await PCBox.find();
         res.status(200).json(pcBoxPokemon);
     } catch (error) {
-        console.error("Error fetching PC Box:", error);
         res.status(500).json({ message: "Failed to fetch PC Box Pokemon" });
     }
 });
@@ -37,7 +36,6 @@ app.post("/api/pc-box", async (req: Request, res: Response) => {
         await newPokemon.save();
         res.status(201).json({ message: "Pokemon saved to PC Box" });
     } catch (error) {
-        console.error("Error saving to PC Box:", error);
         res.status(500).json({ message: "Failed to save Pokemon to PC Box" });
     }
 });
