@@ -5,6 +5,7 @@ import PokemonParty from "../pokemon-party/page";
 import PcBox from "../pc-box/page";
 import { Close, CropSquare, Minimize } from "@mui/icons-material";
 import "../replace.css";
+import DownloadButton from "./DownloadButton";
 
 const CustomFrame = () => {
     const [value, setValue] = useState(0);
@@ -79,6 +80,8 @@ const CustomFrame = () => {
                             style={{ display: "flex", alignItems: "center" }}
                         />
                     </Tabs>
+
+                    <DownloadButton />
 
                     <div className="controls">
                         <button className="button" onClick={handleMinimize}>

@@ -19,7 +19,7 @@ export default function PcBox() {
         const fetchPcBoxPokemon = async () => {
             try {
                 const { data } = await axios.get(
-                    "http://localhost:4000/api/pc-box"
+                    `${process.env.API_URL}/api/pc-box`
                 );
                 setPcBoxPokemon(data);
             } catch (error) {

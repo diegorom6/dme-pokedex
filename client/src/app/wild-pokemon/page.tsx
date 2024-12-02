@@ -132,7 +132,7 @@ const Wild = () => {
                 window.db.savePokemon(pokemon);
             } else {
                 //Guardar en Mongo si se alcanzó el límite
-                await axios.post("http://localhost:4000/api/pc-box", pokemon);
+                await axios.post(`${process.env.API_URL}/api/pc-box`, pokemon);
             }
 
             setDialogOpen(false);
