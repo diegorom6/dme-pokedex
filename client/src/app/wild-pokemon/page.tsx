@@ -230,7 +230,7 @@ const Wild = () => {
                                     alignItems: "center",
                                 }}
                             >
-                                <Image
+                                <img
                                     src={selectedPokemon.image}
                                     alt={selectedPokemon.name}
                                     width={200}
