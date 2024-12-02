@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "main": "build/main.js",
+    "author": "Diego Romero 😎",
     "scripts": {
         "next:dev": "next dev",
         "next:build": "next build",
