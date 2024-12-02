@@ -1,0 +1,10 @@
+{
+    "watch": [
+        "electron/src"
+    ],
+    "ext": "ts",
+    "exec": "tsup && electron build/main.js",
+    "ignore": [
+        "node_modules"
+    ]
+}
