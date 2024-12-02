@@ -37,7 +37,6 @@ const Wild = () => {
         null
     );
     const [dialogOpen, setDialogOpen] = useState(false);
-    const partyPokemon = useAppSelector((state) => state.pokemon.party);
 
     useEffect(() => {
         const fetchTypes = async () => {
@@ -112,8 +111,7 @@ const Wild = () => {
                 window.db.savePokemon(pokemon);
             } else {
                 //Guardar en MongoDB si se alcanzó el límite...
-                //TODO
-                console.log("Guardado en MongoDB!");
+                await axios.post("http://localhost:4000/api/pc-box", pokemon);
             }
 
             setDialogOpen(false);
